@@ -1,0 +1,28 @@
+# @docs https://docs.gitlab.com/ee/ci/yaml
+
+image: node:18-alpine # current lts
+
+variables:
+  TERM: xterm-256color
+  CI_DEBUG_SERVICES: "true"
+
+stages:
+  - release
+
+release:
+  stage: release
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  variables:
+    IMAGE_DEST: $CI_REGISTRY_IMAGE:18-alpine
+  before_script: []
+  cache: {}
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile.opencv"
+      --destination "${IMAGE_DEST}"
+  rules:
+    - when: manual
