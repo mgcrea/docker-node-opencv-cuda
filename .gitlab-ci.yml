@@ -25,4 +25,6 @@ release:
       --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
       --destination "${IMAGE_DEST}"
   rules:
+    - changes:
+        - Dockerfile
     - when: manual
