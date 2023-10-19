@@ -42,14 +42,13 @@ RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
       -D CUDA_FAST_MATH=ON \
       -D CUDA_ARCH_BIN=${CUDA_ARCH_BIN} \
       -D CMAKE_BUILD_TYPE=RELEASE \
-      # Install path will be /usr/local/lib (lib is implicit)
-      -D CMAKE_INSTALL_PREFIX=/usr/local \
+      -D CMAKE_INSTALL_PREFIX=/usr/src/opencv-${OPENCV_VERSION} \
       .. &&\
     make -j$(nproc) &&\
-    # Install to /usr/local/lib
     make install &&\
-    ldconfig &&\
-    # Remove OpenCV sources and build folder
-    rm -rf /opt/opencv-${OPENCV_VERSION} && rm -rf /opt/opencv_contrib-${OPENCV_VERSION}
+    ldconfig
+
+# Remove OpenCV sources and build folder
+# RUN rm -rf /opt/opencv-${OPENCV_VERSION} && rm -rf /opt/opencv_contrib-${OPENCV_VERSION}
 
 # FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04 as runtime
