@@ -10,11 +10,14 @@ RUN apt-get update &&\
     unzip \
     wget
 
-WORKDIR /opt
-
 # Fetch opencv and opencv_contrib sources
-RUN git clone --depth 1 --branch ${OPENCV_VERSION} https://github.com/opencv/opencv.git opencv-${OPENCV_VERSION} &&\
-    git clone --depth 1 --branch ${OPENCV_VERSION} https://github.com/opencv/opencv_contrib.git opencv_contrib-${OPENCV_VERSION}
+RUN git clone --depth 1 --branch ${OPENCV_VERSION} https://github.com/opencv/opencv.git /opt/opencv-${OPENCV_VERSION} &&\
+    cd /opt/opencv-${OPENCV_VERSION} &&\
+    git fetch origin pull/24104/head &&\
+    git config --global user.email "build@docker.com" &&\
+    git config --global user.name "Docker" &&\
+    git cherry-pick ab8cb6f8a9034da2a289b84685c6d959266029be &&\
+    git clone --depth 1 --branch ${OPENCV_VERSION} https://github.com/opencv/opencv_contrib.git /opt/opencv_contrib-${OPENCV_VERSION}
 
 RUN apt-get install -y \
     build-essential \
