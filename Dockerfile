@@ -34,16 +34,19 @@ RUN apt-get install -y \
 RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
     cd /opt/opencv-${OPENCV_VERSION}/build &&\
     cmake \
-      -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-${OPENCV_VERSION}/modules \
-      -D WITH_CUDA=ON \
-      -D WITH_CUDNN=ON \
-      -D OPENCV_ENABLE_NONFREE=ON \
-      -D OPENCV_DNN_CUDA=ON \
-      -D ENABLE_FAST_MATH=ON \
-      -D CUDA_FAST_MATH=ON \
-      -D CUDA_ARCH_BIN=${CUDA_ARCH_BIN} \
       -D CMAKE_BUILD_TYPE=RELEASE \
       -D CMAKE_INSTALL_PREFIX=${OPENCV_INSTALL_PREFIX} \
+      -D CUDA_ARCH_BIN=${CUDA_ARCH_BIN} \
+      -D CUDA_FAST_MATH=ON \
+      -D ENABLE_FAST_MATH=ON \
+      -D OPENCV_DNN_CUDA=ON \
+      -D OPENCV_ENABLE_NONFREE=ON \
+      -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-${OPENCV_VERSION}/modules \
+      -D WITH_CUBLAS=ON \
+      -D WITH_CUDA=ON \
+      -D WITH_CUDNN=ON \
+      -D WITH_CUFFT=ON \
+      -D WITH_OPENCL=ON \
       .. &&\
     make -j$(nproc) &&\
     make install &&\
