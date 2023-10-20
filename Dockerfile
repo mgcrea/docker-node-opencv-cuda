@@ -1,9 +1,9 @@
 FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04 as devel
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG OPENCV_VERSION=4.8.1
-ARG CUDA_ARCH_BIN=8.0
-# ARG OPENCV_INSTALL_PREFIX=/usr/local
+ENV OPENCV_VERSION=4.8.1
+ENV CUDA_ARCH_BIN=8.0
+ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv/${OPENCV_VERSION}
 
 RUN apt-get update &&\
     apt-get install -y \
@@ -43,7 +43,7 @@ RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
       -D CUDA_FAST_MATH=ON \
       -D CUDA_ARCH_BIN=${CUDA_ARCH_BIN} \
       -D CMAKE_BUILD_TYPE=RELEASE \
-      -D CMAKE_INSTALL_PREFIX=/usr/src/opencv-${OPENCV_VERSION} \
+      -D CMAKE_INSTALL_PREFIX=${OPENCV_INSTALL_PREFIX} \
       .. &&\
     make -j$(nproc) &&\
     make install &&\
