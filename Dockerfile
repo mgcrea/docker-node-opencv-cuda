@@ -1,6 +1,8 @@
+# https://hub.docker.com/r/nvidia/cuda/tags?page=1&name=ubuntu22.04
 FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04 as devel
 
 ARG DEBIAN_FRONTEND=noninteractive
+# https://github.com/opencv/opencv/releases
 ENV OPENCV_VERSION=4.8.1
 
 # Install git to fetch opencv and opencv_contrib sources
