@@ -28,7 +28,7 @@ RUN apt-get install -y \
     libopenjp2-7-dev \
     libpng-dev \
     libtiff-dev \
-    libwebp-dev 
+    libwebp-dev
 
 # Create build folder and switch to it
 RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
