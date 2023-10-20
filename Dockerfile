@@ -70,6 +70,8 @@ RUN apt-get update &&\
 # Restore ENV variables from devel stage
 ENV OPENCV_VERSION=4.8.1
 ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv/${OPENCV_VERSION}
+
+# Copy OpenCV built binaries from devel stage
 COPY --from=devel ${OPENCV_INSTALL_PREFIX} ${OPENCV_INSTALL_PREFIX}
 
 # Install node.js
