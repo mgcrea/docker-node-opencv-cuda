@@ -2,14 +2,10 @@ FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04 as devel
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV OPENCV_VERSION=4.8.1
-ENV CUDA_ARCH_BIN=8.0
-ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv/${OPENCV_VERSION}
 
 RUN apt-get update &&\
     apt-get install -y \
-    git\
-    unzip \
-    wget
+    git
 
 # Fetch opencv and opencv_contrib sources
 RUN git clone --depth 1 --branch ${OPENCV_VERSION} https://github.com/opencv/opencv.git /opt/opencv-${OPENCV_VERSION} &&\
@@ -30,6 +26,10 @@ RUN apt-get install -y \
     libtiff-dev \
     libwebp-dev
 
+ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv/${OPENCV_VERSION}
+ARG CUDA_ARCH_BIN=8.0
+ARG OPENCV_EXTRA_FLAGS=
+
 # Create build folder and switch to it
 RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
     cd /opt/opencv-${OPENCV_VERSION}/build &&\
@@ -47,10 +47,26 @@ RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
       -D WITH_CUDNN=ON \
       -D WITH_CUFFT=ON \
       -D WITH_OPENCL=ON \
+      ${OPENCV_EXTRA_FLAGS} \
       .. &&\
     make -j$(nproc) &&\
     make install &&\
     ldconfig
+
+FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04 as runtime
+
+RUN apt-get update &&\
+    apt-get install -y \
+    libjpeg-dev \
+    libopenexr-dev \
+    libopenjp2-7-dev \
+    libpng-dev \
+    libtiff-dev \
+    libwebp-dev
+
+ENV OPENCV_VERSION=4.8.1
+ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv/${OPENCV_VERSION}
+COPY --from=devel ${OPENCV_INSTALL_PREFIX} ${OPENCV_INSTALL_PREFIX}
 
 # Install node.js
 ENV NODE_VERSION 18.18.2
@@ -58,7 +74,8 @@ ARG ARCH=x64
 # ARG NODE_INSTALL_PREFIX=/usr/local
 
 RUN apt-get install -y \
-    curl
+    curl \ 
+    xz-utils
 
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && case "${dpkgArch##*-}" in \
