@@ -3,6 +3,7 @@ FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04 as devel
 ARG DEBIAN_FRONTEND=noninteractive
 ENV OPENCV_VERSION=4.8.1
 
+# Install git to fetch opencv and opencv_contrib sources
 RUN apt-get update &&\
     apt-get install -y \
     git
@@ -30,7 +31,7 @@ ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv/${OPENCV_VERSION}
 ARG CUDA_ARCH_BIN=8.0
 ARG OPENCV_EXTRA_FLAGS=
 
-# Create build folder and switch to it
+# Compile and install OpenCV
 RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
     cd /opt/opencv-${OPENCV_VERSION}/build &&\
     cmake \
@@ -53,17 +54,20 @@ RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
     make install &&\
     ldconfig
 
+# Switch to runtime image to reduce image size
 FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04 as runtime
 
+# Install runtime dependencies
 RUN apt-get update &&\
     apt-get install -y \
-    libjpeg-dev \
-    libopenexr-dev \
-    libopenjp2-7-dev \
-    libpng-dev \
-    libtiff-dev \
-    libwebp-dev
+    libjpeg8 \
+    libopenexr25 \
+    libopenjp2-7 \
+    libpng16-16 \
+    libtiff5 \
+    libwebp7
 
+# Restore ENV variables from devel stage
 ENV OPENCV_VERSION=4.8.1
 ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv/${OPENCV_VERSION}
 COPY --from=devel ${OPENCV_INSTALL_PREFIX} ${OPENCV_INSTALL_PREFIX}
