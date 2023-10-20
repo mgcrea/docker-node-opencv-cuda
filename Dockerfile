@@ -100,6 +100,14 @@ RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
   && node --version \
   && npm --version
 
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD [ "node" ]
+
+# Remove OpenCV sources and build folder
+# RUN rm -rf /opt/opencv-${OPENCV_VERSION} && rm -rf /opt/opencv_contrib-${OPENCV_VERSION}
+
 # RUN mkdir /opt/node-${NODE_VERSION} &&\
 #     cd /opt/node-${NODE_VERSION} &&\
 #     curl -fsSLO --compressed "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${ARCH}.tar.xz" &&\
