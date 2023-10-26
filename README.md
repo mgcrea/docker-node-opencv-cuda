@@ -12,6 +12,31 @@ Working OpenCV+CUDA Docker image for your Node.js applications.
 
 - **modern:** We are targeting the latest [OpenCV releases](https://github.com/opencv/opencv/releases) and plan to keep it up-to-date as much as possible.
 
+## Getting started
+
+- Using the command line interface:
+
+```sh
+docker pull mgcrea/node-opencv-cuda:18-opencv-4-cuda-12-cudnn8-runtime-ubuntu22.04
+docker run -it --rm --runtime=nvidia --gpus all mgcrea/node-opencv-cuda:18-opencv-4-cuda-12-cudnn8-runtime-ubuntu22.04 nvidia-smi
+```
+
+- Using your own Dockerfile (basic example):
+
+```dockerfile
+FROM mgcrea/node-opencv-cuda:18-opencv-4-cuda-12-cudnn8-runtime-ubuntu22.04
+
+# Install app
+WORKDIR /app
+COPY package.json .
+COPY build ./build/
+COPY node_modules ./node_modules/
+
+EXPOSE 3000
+
+CMD node .
+```
+
 ## Notes
 
 To fully leverage your GPU capabilities, you might need to tweak the `CUDA_ARCH_BIN` according to your GPU, you should check your [GPU Compute Capability](https://developer.nvidia.com/cuda-gpus) and build this image accordingly:

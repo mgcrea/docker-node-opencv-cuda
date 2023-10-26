@@ -1,6 +1,6 @@
 PLATFORM:=linux/amd64
 IMAGE:=$(USER)/$(shell basename $(CURDIR))
-TAG:=18-cuda-12.2.2-cudnn8-runtime-ubuntu22.04
+TAG:=18-opencv-4-cuda-12-cudnn8-runtime-ubuntu22.04
 
 all: build
 
