@@ -15,7 +15,7 @@ release:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   variables:
-    IMAGE_TAG: 18-cuda-12.2.2-cudnn8-runtime-ubuntu22.04
+    IMAGE_TAG: 18-opencv-4-cuda-12-cudnn8-runtime-ubuntu22.04
     IMAGE_DEST: $CI_REGISTRY_IMAGE:$IMAGE_TAG
   before_script: []
   cache: {}

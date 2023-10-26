@@ -132,21 +132,3 @@ COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD [ "node" ]
-
-# Remove OpenCV sources and build folder
-# RUN rm -rf /opt/opencv-${OPENCV_VERSION} && rm -rf /opt/opencv_contrib-${OPENCV_VERSION}
-
-# RUN mkdir /opt/node-${NODE_VERSION} &&\
-#     cd /opt/node-${NODE_VERSION} &&\
-#     curl -fsSLO --compressed "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${ARCH}.tar.xz" &&\
-#     curl -fsSLO --compressed "https://nodejs.org/dist/v${NODE_VERSION}/SHASUMS256.txt.asc" &&\
-#     gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc
-
-# Install pnpm
-# RUN corepack enable \
-#     && corepack prepare pnpm@latest-8 --activate
-
-# Remove OpenCV sources and build folder
-# RUN rm -rf /opt/opencv-${OPENCV_VERSION} && rm -rf /opt/opencv_contrib-${OPENCV_VERSION}
-
-# FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04 as runtime
