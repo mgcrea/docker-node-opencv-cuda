@@ -30,7 +30,7 @@ RUN apt-get install -y \
     libtiff-dev \
     libwebp-dev
 
-ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv/${OPENCV_VERSION}
+ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv-${OPENCV_VERSION}
 ARG CUDA_ARCH_BIN=8.0
 ARG OPENCV_EXTRA_FLAGS=
 
@@ -38,8 +38,6 @@ ARG OPENCV_EXTRA_FLAGS=
 RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
     cd /opt/opencv-${OPENCV_VERSION}/build &&\
     cmake \
-      -D OPENCV_GENERATE_PKGCONFIG=ON \
-      # -D OPENCV_PC_FILE_NAME=opencv.pc \
       -D CMAKE_BUILD_TYPE=RELEASE \
       -D CMAKE_INSTALL_PREFIX=${OPENCV_INSTALL_PREFIX} \
       -D CUDA_ARCH_BIN=${CUDA_ARCH_BIN} \
@@ -48,6 +46,7 @@ RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
       -D OPENCV_DNN_CUDA=ON \
       -D OPENCV_ENABLE_NONFREE=ON \
       -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-${OPENCV_VERSION}/modules \
+      -D OPENCV_GENERATE_PKGCONFIG=ON \
       -D WITH_CUBLAS=ON \
       -D WITH_CUDA=ON \
       -D WITH_CUDNN=ON \
@@ -74,7 +73,7 @@ RUN apt-get update &&\
 
 # Restore ENV variables from devel stage
 ENV OPENCV_VERSION=${OPENCV_VERSION}
-ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv/${OPENCV_VERSION}
+ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv-${OPENCV_VERSION}
 
 # Copy OpenCV built binaries from devel stage
 COPY --from=devel ${OPENCV_INSTALL_PREFIX} ${OPENCV_INSTALL_PREFIX}
