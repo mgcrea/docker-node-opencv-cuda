@@ -13,7 +13,7 @@ all: build
 env:
 	@echo ${IMAGE}
 
-run:
+bash:
 	@docker run -it --rm --platform $(PLATFORM) $(IMAGE):$(TAG) /bin/bash
 
 build:
