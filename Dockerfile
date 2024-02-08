@@ -38,6 +38,8 @@ ARG OPENCV_EXTRA_FLAGS=
 RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
     cd /opt/opencv-${OPENCV_VERSION}/build &&\
     cmake \
+      -D OPENCV_GENERATE_PKGCONFIG=ON \
+      # -D OPENCV_PC_FILE_NAME=opencv.pc \
       -D CMAKE_BUILD_TYPE=RELEASE \
       -D CMAKE_INSTALL_PREFIX=${OPENCV_INSTALL_PREFIX} \
       -D CUDA_ARCH_BIN=${CUDA_ARCH_BIN} \
