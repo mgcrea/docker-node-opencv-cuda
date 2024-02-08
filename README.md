@@ -14,6 +14,8 @@ Working OpenCV+CUDA Docker image for your Node.js applications.
 
 ## Getting started
 
+Check the available tags on [dockerhub](https://hub.docker.com/r/mgcrea/node-opencv-cuda/tags).
+
 - Using the command line interface:
 
 ```sh
