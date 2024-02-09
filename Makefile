@@ -18,12 +18,14 @@ bash:
 
 build:
 	@docker build --platform $(PLATFORM) --build-arg OPENCV_VERSION=$(OPENCV_VERSION) --tag $(IMAGE):$(TAG) .
+	@docker push $(IMAGE):$(TAG)
 
 build-lts:
 	@docker build --platform $(PLATFORM) --build-arg NODE_VERSION=$(LTS_NODE_VERSION) --tag $(IMAGE):$(LTS_TAG) .
 
 build-devel:
 	@docker build --file Dockerfile.devel --platform $(PLATFORM) --tag $(IMAGE):$(DEVEL_TAG) .
+	@docker push $(IMAGE):$(DEVEL_TAG)
 
 build-devel-lts:
 	@docker build --file Dockerfile.devel --platform $(PLATFORM) --build-arg NODE_VERSION=$(LTS_NODE_VERSION) --tag $(IMAGE):$(LTS_DEVEL_TAG) .

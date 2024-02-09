@@ -56,7 +56,7 @@ RUN mkdir /opt/opencv-${OPENCV_VERSION}/build &&\
       .. &&\
     make -j$(nproc) &&\
     make install &&\
-    ldconfig<
+    ldconfig
 
 # Switch to runtime image to reduce image size
 FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04 as runtime
@@ -75,6 +75,8 @@ RUN apt-get update &&\
 ARG OPENCV_VERSION=4.9.0
 ENV OPENCV_VERSION=${OPENCV_VERSION}
 ENV OPENCV_INSTALL_PREFIX=/usr/local/opencv-${OPENCV_VERSION}
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$OPENCV_INSTALL_PREFIX/lib
+ENV PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$OPENCV_INSTALL_PREFIX/lib/pkgconfig
 
 # Copy OpenCV built binaries from devel stage
 COPY --from=devel ${OPENCV_INSTALL_PREFIX} ${OPENCV_INSTALL_PREFIX}

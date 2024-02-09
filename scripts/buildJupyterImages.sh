@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE_TYPE="devel" # runtime | devel
+IMAGE_TYPE="${IMAGE_TYPE:-runtime}" # runtime | devel
 REGISTRY="docker.io"
 OWNER=mgcrea
 PLATFORM="linux/amd64"
